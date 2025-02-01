@@ -1,0 +1,469 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Student Fees Management</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background: linear-gradient(135deg, #000000, #24af9d7c, #ee9bc5);
+            background-size: 300% 300%;
+            animation: gradientAnimation 15s ease infinite;
+            color: rgb(255, 255, 255);
+        }
+
+        @keyframes gradientAnimation {
+            0% {
+                background-position: 0% 50%;
+            }
+
+            50% {
+                background-position: 100% 50%;
+            }
+
+            100% {
+                background-position: 0% 50%;
+            }
+        }
+
+        header {
+            background: linear-gradient(to right, #061d33, #026336);
+            color: #fffffd;
+            text-align: center;
+            padding: 1em;
+            opacity: 0.7;
+            box-shadow: 8px 10px 5px rgb(90, 2, 2);
+            border-radius: 20px;
+            font-family: "PT Serif", serif;
+            font-weight: 700;
+            font-style: normal;
+        }
+
+        section h2 {
+            color: rgb(250, 7, 7);
+            font-size: 30px;
+            text-align: center;
+            border-radius: 50px;
+            justify-content: center;
+            align-items: center;
+            font-family: "PT Serif", serif;
+            font-weight: 520;
+            font-style: normal;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 20px;
+            color: rgb(0, 0, 0);
+        }
+
+        th, td {
+            padding: 8px;
+            border: 1px solid #ddd;
+        }
+
+        th {
+            background-color: #6866ee;
+            color: #000000;
+        }
+
+        form {
+            margin-top: 20px;
+            max-width: 400px;
+            margin-left: auto;
+            margin-right: auto;
+            padding: 20px;
+            background: linear-gradient(to right, #034434, #8ee283);
+            border-radius: 15px;
+            box-shadow: 10px 8px 10px rgb(126, 1, 1);
+            font-family: "Libre Baskerville", serif;
+            font-weight: 400;
+            font-style: normal;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 12px;
+            font-weight: bold;
+        }
+
+        input,
+        select {
+            width: 100%;
+            padding: 15px;
+            margin-bottom: 15px;
+            box-sizing: border-box;
+            border: 1px solid #0019fa;
+            border-radius: 6px;
+        }
+
+        button {
+            background-color: #4caf50;
+            color: #e1f5eb;
+            padding: 15px 20px;
+            border: none;
+            cursor: pointer;
+            border-radius: 6px;
+            width: 100%;
+        }
+
+        button:hover {
+            background-color: #f87800;
+        }
+
+        .success-message {
+            background-color: #023b2d;
+            text-align: center;
+            color: #3ddd43;
+            font-weight: bold;
+            margin-bottom: 20px;
+            text-align: center;
+        }
+
+        .fees-block {
+            margin-top: 20px;
+            padding: 15px;
+            background-color: #fff5f5;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(236, 2, 2, 0.986);
+        }
+
+        .print-button {
+            background-color: #008CBA;
+            color: #8d0505;
+            padding: 15px 20px;
+            border: none;
+            cursor: pointer;
+            border-radius: 6px;
+            width: 100%;
+            display: none;
+        }
+
+        .print-button:hover {
+            background-color: #007BB5;
+        }
+
+        .search-input {
+            width: 100%;
+            padding: 10px;
+            margin-bottom: 10px;
+            box-sizing: border-box;
+            border: 1px solid #0019fa;
+            border-radius: 6px;
+        }
+
+        .search-button {
+            background-color: #4caf50;
+            color: #e1f5eb;
+            padding: 10px 20px;
+            border: none;
+            cursor: pointer;
+            border-radius: 6px;
+            width: 100%;
+        }
+
+        .search-button:hover {
+            background-color: #f87800;
+        }
+    </style>
+</head>
+
+<body>
+    <header>
+        <h1>Student Fees Details Of C.S.E.</h1>
+    </header>
+
+    <section>
+        <h2>Add New Student Fees</h2>
+
+        <p class="success-message" id="successMessage" style="display: none;"></p>
+
+        <form id="feesForm">
+            <label for="studentId">Student ID:</label>
+            <input type="text" id="studentId" name="studentId" required>
+
+            <label for="studentName">Student Name:</label>
+            <input type="text" id="studentName" name="studentName" required>
+
+            <label for="mobileNo">Mobile No.:</label>
+            <input type="text" id="mobileNo" name="mobileNo" required>
+
+            <label for="category">Choose Category:</label>
+            <select id="category" name="category">
+                <option value="General">General</option>
+                <option value="OBC">OBC</option>
+                <option value="ST">ST</option>
+                <option value="SC">SC</option>
+            </select>
+
+            <label for="semester">Semester:</label>
+            <input type="number" id="semester" name="semester" required>
+
+            <label for="fees">Fees:</label>
+            <input type="number" id="fees" name="fees" required>
+
+            <label for="paymentMethod">Payment Method:</label>
+            <select id="paymentMethod" name="paymentMethod">
+                <option value="Full Payment">Full Payment</option>
+                <option value="Installment">Installment</option>
+            </select>
+
+            <button type="button" onclick="submitFees()">Add Fees</button>
+        </form>
+
+        <div class="fees-block" id="feesBlock">
+            <h2>Fees Information</h2>
+            <table id="feesTable">
+                <thead>
+                    <tr>
+                        <th>Student ID</th>
+                        <th>Student Name</th>
+                        <th>Mobile No.</th>
+                        <th>Category</th>
+                        <th>Semester</th>
+                        <th>Fees Paid</th>
+                        <th>Remaining Fees</th>
+                        <th>Actions</th>
+                    </tr>
+                </thead>
+                <tbody id="feesBody">
+                    <!-- Fees details will be dynamically added here -->
+                </tbody>
+            </table>
+
+            <input type="text" id="searchInput" class="search-input" placeholder="Search by student name, ID, or mobile number" onkeyup="searchFeesData()">
+            <button type="button" class="search-button" onclick="searchFeesData()">Search</button>
+            <button class="print-button" id="printButton" onclick="printFilteredRecords()">Print Filtered Records</button>
+        </div>
+    </section>
+
+    <script>
+        var searchResult = null;
+        var editIndex = -1; // To track the index of the record being edited
+
+        // Function to initialize data from local storage on page load
+        window.onload = function () {
+            // Retrieve data from local storage
+            var storedData = localStorage.getItem('feesData');
+
+            if (storedData) {
+                // Parse the stored data
+                storedData = JSON.parse(storedData);
+
+                // Populate the table with stored data
+                var tableBody = document.getElementById('feesBody');
+
+                storedData.forEach(function (feesData, index) {
+                    var newRow = document.createElement('tr');
+                    newRow.innerHTML = `
+                        <td>${feesData.studentId}</td>
+                        <td>${feesData.studentName}</td>
+                        <td>${feesData.mobileNo}</td>
+                        <td>${feesData.category}</td>
+                        <td>${feesData.semester}</td>
+                        <td>${feesData.fees}</td>
+                        <td>${feesData.remainingFees}</td>
+                        <td>
+                            <button onclick="editRecord(${index})">Edit</button>
+                            <button onclick="deleteRecord(${index})">Delete</button>
+                        </td>
+                    `;
+                    tableBody.appendChild(newRow);
+                });
+
+                // Show the print button when there are records
+                var printButton = document.getElementById('printButton');
+                printButton.style.display = 'block';
+            }
+        }
+
+        // Function to submit fees information
+        function submitFees() {
+            var studentId = document.getElementById('studentId').value;
+            var studentName = document.getElementById('studentName').value;
+            var mobileNo = document.getElementById('mobileNo').value;
+            var category = document.getElementById('category').value;
+            var semester = document.getElementById('semester').value;
+            var fees = document.getElementById('fees').value;
+            var paymentMethod = document.getElementById('paymentMethod').value;
+
+            var remainingFees = 0;
+            if (paymentMethod === 'Installment') {
+                remainingFees = fees / 2; // Assuming 50% remaining if paid in installments
+            }
+
+            var feesData = {
+                studentId: studentId,
+                studentName: studentName,
+                mobileNo: mobileNo,
+                category: category,
+                semester: semester,
+                fees: fees,
+                remainingFees: remainingFees
+            };
+
+            var tableBody = document.getElementById('feesBody');
+            var newRow = document.createElement('tr');
+            newRow.innerHTML = `
+                <td>${studentId}</td>
+                <td>${studentName}</td>
+                <td>${mobileNo}</td>
+                <td>${category}</td>
+                <td>${semester}</td>
+                <td>${fees}</td>
+                <td>${remainingFees}</td>
+                <td>
+                    <button onclick="editRecord(${tableBody.rows.length})">Edit</button>
+                    <button onclick="deleteRecord(${tableBody.rows.length})">Delete</button>
+                </td>
+            `;
+
+            if (editIndex >= 0) {
+                // Update the existing record
+                tableBody.replaceChild(newRow, tableBody.childNodes[editIndex]);
+                editIndex = -1;
+            } else {
+                // Add new record
+                tableBody.appendChild(newRow);
+            }
+
+            // Retrieve existing data from local storage or create a new array if none exists
+            var storedData = localStorage.getItem('feesData');
+            var feesArray = storedData ? JSON.parse(storedData) : [];
+
+            if (editIndex >= 0) {
+                // Update existing record in the array
+                feesArray[editIndex] = feesData;
+                editIndex = -1;
+            } else {
+                // Add new record to the array
+                feesArray.push(feesData);
+            }
+
+            // Store the updated array in local storage
+            localStorage.setItem('feesData', JSON.stringify(feesArray));
+
+            // Show success message
+            document.getElementById('successMessage').textContent = 'Fees information added successfully!';
+            document.getElementById('successMessage').style.display = 'block';
+
+            // Reset form fields
+            document.getElementById('feesForm').reset();
+
+            // Show the print button
+            var printButton = document.getElementById('printButton');
+            printButton.style.display = 'block';
+
+            setTimeout(function () {
+                document.getElementById('successMessage').style.display = 'none';
+            }, 2000);
+        }
+
+        // Function to search fees data
+        function searchFeesData() {
+            var searchInput = document.getElementById('searchInput').value.toLowerCase();
+            var tableBody = document.getElementById('feesBody');
+            var rows = tableBody.getElementsByTagName('tr');
+            var filteredData = [];
+
+            for (var i = 0; i < rows.length; i++) {
+                var cells = rows[i].getElementsByTagName('td');
+                var studentId = cells[0].textContent.toLowerCase();
+                var studentName = cells[1].textContent.toLowerCase();
+                var mobileNo = cells[2].textContent.toLowerCase();
+
+                if (studentId.includes(searchInput) || studentName.includes(searchInput) || mobileNo.includes(searchInput)) {
+                    rows[i].style.display = '';
+                    filteredData.push(rows[i].outerHTML); // Store the HTML of the filtered row
+                } else {
+                    rows[i].style.display = 'none';
+                }
+            }
+
+            // Store filtered data in searchResult variable
+            searchResult = filteredData;
+
+            // Show or hide the print button based on search results
+            var printButton = document.getElementById('printButton');
+            printButton.style.display = searchResult.length > 0 ? 'block' : 'none';
+        }
+
+        // Function to print filtered records
+        function printFilteredRecords() {
+            var printWindow = window.open('', '_blank');
+            printWindow.document.write('<html><head><title>Print Records</title></head><body>');
+            printWindow.document.write('<table border="1">' + searchResult.join('') + '</table>');
+            printWindow.document.write('</body></html>');
+            printWindow.document.close();
+            printWindow.print();
+        }
+
+        // Function to edit a record
+        function editRecord(index) {
+            // Retrieve existing data from local storage
+            var storedData = localStorage.getItem('feesData');
+            var feesArray = storedData ? JSON.parse(storedData) : [];
+
+            // Get the data for the record to be edited
+            var record = feesArray[index];
+
+            // Populate form fields with the data
+            document.getElementById('studentId').value = record.studentId;
+            document.getElementById('studentName').value = record.studentName;
+            document.getElementById('mobileNo').value = record.mobileNo;
+            document.getElementById('category').value = record.category;
+            document.getElementById('semester').value = record.semester;
+            document.getElementById('fees').value = record.fees;
+            document.getElementById('paymentMethod').value = record.paymentMethod;
+
+            // Store the index of the record being edited
+            editIndex = index;
+        }
+
+        // Function to delete a record
+        function deleteRecord(index) {
+            // Retrieve existing data from local storage
+            var storedData = localStorage.getItem('feesData');
+            var feesArray = storedData ? JSON.parse(storedData) : [];
+
+            // Remove the record from the array
+            feesArray.splice(index, 1);
+
+            // Store the updated array in local storage
+            localStorage.setItem('feesData', JSON.stringify(feesArray));
+
+            // Refresh the table
+            var tableBody = document.getElementById('feesBody');
+            tableBody.innerHTML = '';
+
+            feesArray.forEach(function (feesData, index) {
+                var newRow = document.createElement('tr');
+                newRow.innerHTML = `
+                    <td>${feesData.studentId}</td>
+                    <td>${feesData.studentName}</td>
+                    <td>${feesData.mobileNo}</td>
+                    <td>${feesData.category}</td>
+                    <td>${feesData.semester}</td>
+                    <td>${feesData.fees}</td>
+                    <td>${feesData.remainingFees}</td>
+                    <td>
+                        <button onclick="editRecord(${index})">Edit</button>
+                        <button onclick="deleteRecord(${index})">Delete</button>
+                    </td>
+                `;
+                tableBody.appendChild(newRow);
+            });
+
+            // Hide the print button if no records are present
+            var printButton = document.getElementById('printButton');
+            printButton.style.display = feesArray.length > 0 ? 'block' : 'none';
+        }
+    </script>
+</body>
+
+</html>

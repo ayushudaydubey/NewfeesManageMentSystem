@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Student Login</title>
+    <style>
+        body {
+
+            font-family: Arial, sans-serif;
+            background: #780206;
+            /* fallback for old browsers */
+            background: -webkit-linear-gradient(to right, #061161, #780206);
+            /* Chrome 10-25, Safari 5.1-6 */
+            background: linear-gradient(to right, #061161, #780206);
+            /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
+
+            background-position: center;
+            color: white;
+            z-index: 1000;
+            opacity: 1;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            /* Add this line to set the height of the body to the height of the viewport */
+            margin: 0;
+        }
+
+
+
+        .login-container {
+            background: #012130;
+            /* fallback for old browsers */
+            background: -webkit-linear-gradient(to right, #46023a, #023c53);
+            /* Chrome 10-25, Safari 5.1-6 */
+            background: linear-gradient(to right, #58034d, #022d38);
+            /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
+
+            padding: 50px;
+            box-shadow: 0 0 10px rgb(255, 238, 1);
+            border-radius: 15px;
+            opacity: 0.9;
+        }
+
+        h2 {
+            margin-bottom: 20px;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 5px;
+        }
+
+        input[type="text"],
+        input[type="password"] {
+            width: 100%;
+            padding: 10px;
+            margin-bottom: 15px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+        }
+
+        button {
+            width: 100px;
+            padding: 10px;
+            background-color: #4CAF50;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            align-items: center;
+            justify-content: center;
+            align-content: center;
+        }
+
+        button:hover {
+            background-color: #f35b04;
+        }
+
+        #message {
+            color: red;
+            margin-top: 10px;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="login-container">
+        <h2>Student Login</h2>
+        <form id="loginForm">
+            <label for="username">Username:</label>
+            <input type="text" id="username" name="username" required>
+            <label for="password">Password:</label>
+            <input type="password" id="password" name="password" required>
+            <button type="submit">Login</button>
+        </form>
+        <p id="message"></p>
+    </div>
+    <script>
+        document.getElementById('loginForm').addEventListener('submit', function (event) {
+            event.preventDefault();
+            const username = document.getElementById('username').value;
+            const password = document.getElementById('password').value;
+            const message = document.getElementById('message');
+            const students = [
+                { username: 'ayush1009', password: '123456' },
+                { username: 'student2', password: 'password456' }
+            ];
+            const student = students.find(student => student.username === username && student.password === password);
+            if (student) {
+                message.textContent = 'Login successful!';
+                message.style.color = 'green';
+                window.location.href = 'branch.html'; // Redirect to the welcome page
+            } else {
+                message.textContent = 'Invalid username or password.';
+                message.style.color = 'red';
+            }
+        });
+    </script>
+</body>
+
+</html>

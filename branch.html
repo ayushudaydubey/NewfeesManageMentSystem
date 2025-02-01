@@ -1,0 +1,159 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=PT+Serif:ital,wght@0,400;0,700;1,400;1,700&display=swap" rel="stylesheet">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Clickable Full Screen Grid</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background: linear-gradient(135deg, #000000, #24af9d7c, #ee9bc5);
+            background-size: 300% 300%;
+            animation: gradientAnimation 15s ease infinite;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            font-family: "PT Serif", serif;
+        }
+        @keyframes gradientAnimation {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
+        }
+
+
+        .heading {
+            width: 100%;
+            text-align: center;
+            background: linear-gradient(to right, #0c0d0e, #2b4949, #14000e);
+            font-size: 20px;
+            color: rgb(255, 255, 255);
+            padding: 20px 0;
+            margin: 0;
+            opacity: 0.4;
+            position: fixed;
+            top: 0;
+            z-index: 1000;
+        }
+        .heading .name{
+            color: white;
+            opacity: 1.5;
+        }
+
+        .grid-container {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            grid-gap: 20px;
+            max-width: 600px;
+            width: 100vw;
+            height: auto;
+            text-align: center;
+            margin: 80px 0 20px 0;
+            padding: 20px;
+            box-sizing: border-box;
+            gap: 50px;
+        }
+
+        .grid-item {
+            color: #fff;
+            padding: 40px;
+            background: linear-gradient(135deg, #020202, #d50e0e);
+            border-radius: 15px;
+            box-shadow: 0 40px 80px rgb(1, 70, 27);
+            overflow: hidden;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            opacity: 0;
+            transform: translateX(100%);
+            animation: slideIn 1s forwards;
+            animation-delay: calc(var(--animation-order) * 0.3s);
+        }
+
+        @keyframes slideIn {
+            from {
+                opacity: 0;
+                transform: translateX(var(--translate-direction, 0));
+            }
+            to {
+                opacity: 1;
+                transform: translateX(0);
+            }
+        }
+
+        .grid-item:nth-child(odd) {
+            --translate-direction: -100%;
+            --animation-order: 1;
+        }
+
+        .grid-item:nth-child(even) {
+            --translate-direction: 100%;
+            --animation-order: 2;
+        }
+
+        .grid-item h2 {
+            font-size: 24px;
+            margin-bottom: 10px;
+            text-align: center;
+        }
+
+        .grid-item:hover {
+            background: linear-gradient(135deg, #e99777, rgb(255, 0, 0), #4d012f);
+        }
+
+        .grid-item a {
+            text-decoration: none;
+            color: inherit;
+            display: block;
+            height: 100%;
+            width: 100%;
+        }
+    </style>
+</head>
+<body>
+    <div class="heading">
+        <div class="name"> <h2>Choose Your Branch</h2></div>
+       
+    </div>
+    <div class="grid-container">
+        <div class="grid-item" onclick="transformItem(this)">
+            <a href="cseYear.html">
+                <h2>CSE</h2>
+            </a>
+        </div>
+        <div class="grid-item" onclick="transformItem(this)">
+            <a href="momYear.html">
+                <h2>MOM</h2>
+            </a>
+        </div>
+        <div class="grid-item" onclick="transformItem(this)">
+            <a href="civilYear.html">
+                <h2>Civil</h2>
+            </a>
+        </div>
+        <div class="grid-item" onclick="transformItem(this)">
+            <a href="mechYear.html">
+                <h2>Mechanical</h2>
+            </a>
+        </div>
+    </div>
+    <script>
+        function transformItem(item) {
+            item.style.transition = "transform 0.1s ease";
+            item.style.transform = "scale(1.2)";
+            setTimeout(() => {
+                item.style.transform = "scale(1.2)";
+            }, 500);
+        }
+    </script>
+</body>
+</html>

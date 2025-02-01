@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background: linear-gradient(135deg, #000000, #24af9d7c, #ee9bc5);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+        }
+        form {
+            background: linear-gradient(to right, #034434, #8ee283);
+            padding: 30px;
+            border-radius: 15px;
+            box-shadow: 10px 8px 10px rgb(65, 0, 0);
+            text-align: center;
+        }
+        h2 {
+            color: #fffefe;
+        }
+        label {
+            display: block;
+            color: #f9fab1;
+            margin-top: 10px;
+            text-align: left;
+        }
+        input {
+            width: 100%;
+            padding: 10px;
+            margin-top: 5px;
+            border-radius: 5px;
+        }
+        button {
+            width: 100%;
+            height: 40px;
+            background-color: #f57207;
+            color: white;
+            border: none;
+            border-radius: 10px;
+            cursor: pointer;
+            margin-top: 20px;
+        }
+        button:hover {
+            background-color: #f3db08;
+        }
+        .error {
+            color: red;
+            margin-top: 10px;
+        }
+    </style>
+</head>
+<body>
+    <form id="login-form">
+        <h2>Login</h2>
+        <label for="login-username">Username:</label>
+        <input type="text" id="login-username" required>
+        <label for="login-password">Password:</label>
+        <input type="password" id="login-password" required>
+        <button type="submit">Login</button>
+        <p class="error" id="error-message"></p>
+    </form>
+
+    <script>
+        document.getElementById('login-form').addEventListener('submit', function(event) {
+            event.preventDefault();
+
+            let username = document.getElementById('login-username').value;
+            let password = document.getElementById('login-password').value;
+            let storedUsername = localStorage.getItem('username');
+            let storedPassword = localStorage.getItem('password');
+
+            if (username === storedUsername) {
+                if (password === storedPassword) {
+                    alert("Login Successful!");
+                    window.location.href = "branch.html"; 
+                } else {
+                    document.getElementById('error-message').innerText = "This user register already ";
+                }
+            } else {
+                document.getElementById('error-message').innerText = "Invalid Username or Password!";
+            }
+        });
+    </script>
+</body>
+</html>

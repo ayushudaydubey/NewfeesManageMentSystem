@@ -1,0 +1,464 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Student Fees Management</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background: linear-gradient(135deg, #000000, #24af9d7c, #ee9bc5);
+            background-size: 300% 300%;
+            animation: gradientAnimation 15s ease infinite;
+            color: rgb(255, 255, 255);
+        }
+
+        @keyframes gradientAnimation {
+            0% {
+                background-position: 0% 50%;
+            }
+
+            50% {
+                background-position: 100% 50%;
+            }
+
+            100% {
+                background-position: 0% 50%;
+            }
+        }
+
+        header {
+            background: linear-gradient(to right, #061d33, #026336);
+            color: #fffffd;
+            text-align: center;
+            padding: 1em;
+            opacity: 0.7;
+            box-shadow: 8px 10px 5px rgb(90, 2, 2);
+            border-radius: 20px;
+            font-family: "PT Serif", serif;
+            font-weight: 700;
+            font-style: normal;
+        }
+
+        section h2 {
+            color: rgb(250, 7, 7);
+            font-size: 30px;
+            text-align: center;
+            border-radius: 50px;
+            justify-content: center;
+            align-items: center;
+            font-family: "PT Serif", serif;
+            font-weight: 520;
+            font-style: normal;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 20px;
+            color: rgb(0, 0, 0);
+        }
+
+        th {
+            background-color: #6866ee;
+            color: #000000;
+        }
+
+        form {
+            margin-top: 20px;
+            max-width: 400px;
+            margin-left: auto;
+            margin-right: auto;
+            padding: 20px;
+            background: linear-gradient(to right, #034434, #8ee283);
+            border-radius: 15px;
+            box-shadow: 10px 8px 10px rgb(126, 1, 1);
+            font-family: "Libre Baskerville", serif;
+            font-weight: 400;
+            font-style: normal;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 12px;
+            font-weight: bold;
+        }
+
+        input,
+        select {
+            width: 100%;
+            padding: 15px;
+            margin-bottom: 15px;
+            box-sizing: border-box;
+            border: 1px solid #0019fa;
+            border-radius: 6px;
+        }
+
+        button {
+            background-color: #4caf50;
+            color: #e1f5eb;
+            padding: 15px 20px;
+            border: none;
+            cursor: pointer;
+            border-radius: 6px;
+            width: 100%;
+        }
+
+        button:hover {
+            background-color: #f87800;
+        }
+
+        .success-message {
+            background-color: #023b2d;
+            text-align: center;
+            color: #3ddd43;
+            font-weight: bold;
+            margin-bottom: 20px;
+            text-align: center;
+        }
+
+        .fees-block {
+            margin-top: 20px;
+            padding: 15px;
+            background-color: #fff5f5;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(236, 2, 2, 0.986);
+        }
+
+        .print-button {
+            background-color: #008CBA;
+            color: #8d0505;
+            padding: 15px 20px;
+            border: none;
+            cursor: pointer;
+            border-radius: 6px;
+            width: 100%;
+            display: none;
+        }
+
+        .print-button:hover {
+            background-color: #007BB5;
+        }
+
+        .search-input {
+            width: 100%;
+            padding: 10px;
+            margin-bottom: 10px;
+            box-sizing: border-box;
+            border: 1px solid #0019fa;
+            border-radius: 6px;
+        }
+
+        .search-button {
+            background-color: #4caf50;
+            color: #e1f5eb;
+            padding: 10px 20px;
+            border: none;
+            cursor: pointer;
+            border-radius: 6px;
+            width: 100%;
+        }
+
+        .search-button:hover {
+            background-color: #f87800;
+        }
+    </style>
+</head>
+
+<body>
+    <header>
+        <h1>Student Fees Details Of C.S.E Second  Year</h1>
+    </header>
+
+    <section>
+        <h2>Add New Student Fees</h2>
+
+        <p class="success-message" id="successMessage" style="display: none;"></p>
+
+        <form id="feesForm">
+            <label for="studentId">Student ID:</label>
+            <input type="text" id="studentId" name="studentId" required>
+
+            <label for="studentName">Student Name:</label>
+            <input type="text" id="studentName" name="studentName" required>
+
+            <label for="mobileNo">Mobile No.:</label>
+            <input type="text" id="mobileNo" name="mobileNo" required>
+
+            <label for="category">Choose Category:</label>
+            <select id="category" name="category">
+                <option value="General">General</option>
+                <option value="OBC">OBC</option>
+                <option value="ST">ST</option>
+                <option value="SC">SC</option>
+            </select>
+
+            <label for="semester">Semester:</label>
+            <input type="number" id="semester" name="semester" required>
+
+            <label for="fees">Fees:</label>
+            <input type="number" id="fees" name="fees" required>
+
+            <label for="paymentMethod">Payment Method:</label>
+            <select id="paymentMethod" name="paymentMethod">
+                <option value="Full Payment">Full Payment</option>
+                <option value="Installment">Installment</option>
+            </select>
+
+            <button type="button" onclick="submitFees()">Add Fees</button>
+        </form>
+
+        <div class="fees-block" id="feesBlock">
+            <h2>Fees Information</h2>
+            <table id="feesTable">
+                <thead>
+                    <tr>
+                        <th>Student ID</th>
+                        <th>Student Name</th>
+                        <th>Mobile No.</th>
+                        <th>Category</th>
+                        <th>Semester</th>
+                        <th>Fees Paid</th>
+                        <th>Remaining Fees</th>
+                        <th>Actions</th>
+                    </tr>
+                </thead>
+                <tbody id="feesBody">
+                    <!-- Fees details will be dynamically added here -->
+                </tbody>
+            </table>
+
+            <input type="text" id="searchInput" class="search-input" placeholder="Search by student name, ID, or mobile number" onkeyup="searchFeesData()">
+            <button type="button" class="search-button" onclick="searchFeesData()">Search</button>
+            <button class="print-button" id="printButton" onclick="printFilteredRecords()">Print Filtered Records</button>
+        </div>
+    </section>
+
+    <script>
+        var searchResult = null;
+        const currentPage = window.location.pathname;
+
+        // Function to initialize data from local storage on page load
+        window.onload = function () {
+            loadData();
+        };
+
+        function loadData() {
+            // Retrieve data from local storage
+            var storedData = localStorage.getItem('feesData_' + currentPage);
+
+            if (storedData) {
+                // Parse the stored data
+                storedData = JSON.parse(storedData);
+
+                // Populate the table with stored data
+                var tableBody = document.getElementById('feesBody');
+                tableBody.innerHTML = '';
+
+                storedData.forEach(function (feesData, index) {
+                    addRowToTable(feesData, index);
+                });
+
+                // Show the print button when there are records
+                var printButton = document.getElementById('printButton');
+                if (storedData.length > 0) {
+                    printButton.style.display = 'block';
+                } else {
+                    printButton.style.display = 'none';
+                }
+            }
+        }
+
+        function addRowToTable(feesData, index) {
+            var tableBody = document.getElementById('feesBody');
+            var newRow = document.createElement('tr');
+            newRow.innerHTML = `
+                <td>${feesData.studentId}</td>
+                <td>${feesData.studentName}</td>
+                <td>${feesData.mobileNo}</td>
+                <td>${feesData.category}</td>
+                <td>${feesData.semester}</td>
+                <td>${feesData.fees}</td>
+                <td>${feesData.remainingFees}</td>
+                <td>
+                    <button onclick="editFees(${index})">Edit</button>
+                    <button onclick="deleteFees(${index})">Delete</button>
+                </td>
+            `;
+            tableBody.appendChild(newRow);
+        }
+
+        // Function to submit fees
+        function submitFees() {
+            var studentId = document.getElementById('studentId').value;
+            var studentName = document.getElementById('studentName').value;
+            var mobileNo = document.getElementById('mobileNo').value;
+            var category = document.getElementById('category').value;
+            var semester = document.getElementById('semester').value;
+            var fees = document.getElementById('fees').value;
+            var paymentMethod = document.getElementById('paymentMethod').value;
+
+            var remainingFees = 7750 - fees;
+
+            var feesData = {
+                studentId: studentId,
+                studentName: studentName,
+                mobileNo: mobileNo,
+                category: category,
+                semester: semester,
+                fees: fees,
+                paymentMethod: paymentMethod,
+                remainingFees: remainingFees
+            };
+
+            // Save fees data to local storage
+            var storedData = localStorage.getItem('feesData_' + currentPage);
+            if (storedData) {
+                storedData = JSON.parse(storedData);
+            } else {
+                storedData = [];
+            }
+
+            storedData.push(feesData);
+            localStorage.setItem('feesData_' + currentPage, JSON.stringify(storedData));
+
+            // Show success message
+            document.getElementById('successMessage').innerText = 'Fees added successfully!';
+            document.getElementById('successMessage').style.display = 'block';
+
+            // Clear form fields
+            document.getElementById('feesForm').reset();
+
+            // Refresh table data
+            loadData();
+        }
+
+        // Function to search fees data
+        function searchFeesData() {
+            var searchInput = document.getElementById('searchInput').value.toLowerCase();
+            var storedData = localStorage.getItem('feesData_' + currentPage);
+
+            if (storedData) {
+                storedData = JSON.parse(storedData);
+
+                var filteredData = storedData.filter(function (feesData) {
+                    return (
+                        feesData.studentId.toLowerCase().includes(searchInput) ||
+                        feesData.studentName.toLowerCase().includes(searchInput) ||
+                        feesData.mobileNo.toLowerCase().includes(searchInput)
+                    );
+                });
+
+                // Populate the table with filtered data
+                var tableBody = document.getElementById('feesBody');
+                tableBody.innerHTML = '';
+
+                filteredData.forEach(function (feesData, index) {
+                    addRowToTable(feesData, index);
+                });
+
+                // Store the search result for printing
+                searchResult = filteredData;
+
+                // Show the print button when there are filtered records
+                var printButton = document.getElementById('printButton');
+                if (filteredData.length > 0) {
+                    printButton.style.display = 'block';
+                } else {
+                    printButton.style.display = 'none';
+                }
+            }
+        }
+
+        // Function to print filtered records
+        function printFilteredRecords() {
+            var printContent = `
+                <h1>Filtered Student Fees Details</h1>
+                <table border="1">
+                    <thead>
+                        <tr>
+                            <th>Student ID</th>
+                            <th>Student Name</th>
+                            <th>Mobile No.</th>
+                            <th>Category</th>
+                            <th>Semester</th>
+                            <th>Fees Paid</th>
+                            <th>Remaining Fees</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+            `;
+
+            searchResult.forEach(function (feesData) {
+                printContent += `
+                    <tr>
+                        <td>${feesData.studentId}</td>
+                        <td>${feesData.studentName}</td>
+                        <td>${feesData.mobileNo}</td>
+                        <td>${feesData.category}</td>
+                        <td>${feesData.semester}</td>
+                        <td>${feesData.fees}</td>
+                        <td>${feesData.remainingFees}</td>
+                    </tr>
+                `;
+            });
+
+            printContent += `
+                    </tbody>
+                </table>
+            `;
+
+            var printWindow = window.open('', '', 'width=800,height=600');
+            printWindow.document.write('<html><head><title>Print</title></head><body>');
+            printWindow.document.write(printContent);
+            printWindow.document.write('</body></html>');
+            printWindow.document.close();
+            printWindow.print();
+        }
+
+        // Function to edit fees
+        function editFees(index) {
+            var storedData = localStorage.getItem('feesData_' + currentPage);
+            if (storedData) {
+                storedData = JSON.parse(storedData);
+                var feesData = storedData[index];
+
+                // Populate form fields with the existing data
+                document.getElementById('studentId').value = feesData.studentId;
+                document.getElementById('studentName').value = feesData.studentName;
+                document.getElementById('mobileNo').value = feesData.mobileNo;
+                document.getElementById('category').value = feesData.category;
+                document.getElementById('semester').value = feesData.semester;
+                document.getElementById('fees').value = feesData.fees;
+                document.getElementById('paymentMethod').value = feesData.paymentMethod;
+
+                // Remove the existing data from local storage
+                storedData.splice(index, 1);
+                localStorage.setItem('feesData_' + currentPage, JSON.stringify(storedData));
+
+                // Refresh table data
+                loadData();
+            }
+        }
+
+        // Function to delete fees
+        function deleteFees(index) {
+            var storedData = localStorage.getItem('feesData_' + currentPage);
+            if (storedData) {
+                storedData = JSON.parse(storedData);
+
+                // Remove the data from local storage
+                storedData.splice(index, 1);
+                localStorage.setItem('feesData_' + currentPage, JSON.stringify(storedData));
+
+                // Refresh table data
+                loadData();
+            }
+        }
+    </script>
+</body>
+
+</html>
