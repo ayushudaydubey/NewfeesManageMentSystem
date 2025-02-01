@@ -69,23 +69,24 @@
     <script>
         document.getElementById('login-form').addEventListener('submit', function(event) {
             event.preventDefault();
-
+    
             let username = document.getElementById('login-username').value;
             let password = document.getElementById('login-password').value;
-            let storedUsername = localStorage.getItem('username');
-            let storedPassword = localStorage.getItem('password');
-
-            if (username === storedUsername) {
-                if (password === storedPassword) {
-                    alert("Login Successful!");
-                    window.location.href = "branch.html"; 
-                } else {
-                    document.getElementById('error-message').innerText = "This user register already ";
-                }
+            
+            // Local Storage se users ka array fetch karein
+            let users = JSON.parse(localStorage.getItem('users')) || [];
+    
+            // Check karein ki user exist karta hai ya nahi
+            const validUser = users.find(user => user.username === username && user.password === password);
+    
+            if (validUser) {
+                alert("Login Successful!");
+                window.location.href = "branch.html"; 
             } else {
                 document.getElementById('error-message').innerText = "Invalid Username or Password!";
             }
         });
     </script>
+    
 </body>
 </html>
